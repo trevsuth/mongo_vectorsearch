@@ -26,21 +26,21 @@ ATLAS_VECTOR_SEARCH_INDEX_NAME = "gettysburg"
 
 MONGODB_COLLECTION = client[DB_NAME][COLLECTION_NAME]
 
-""" # Load Data
-loader = TextLoader('./gettysburg.txt')
-data = loader.load()
+# # Load Data
+# loader = TextLoader('./gettysburg.txt')
+# data = loader.load()
 
-# Split text
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-docs = text_splitter.split_documents(data)
+# # Split text
+# text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+# docs = text_splitter.split_documents(data)
 
-# insert the documents in MongoDB Atlas with their embedding
-vector_search = MongoDBAtlasVectorSearch.from_documents(
-    documents=docs,
-    embedding=OllamaEmbeddings(),
-    collection=MONGODB_COLLECTION,
-    index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
-) """
+# # insert the documents in MongoDB Atlas with their embedding
+# vector_search = MongoDBAtlasVectorSearch.from_documents(
+#     documents=docs,
+#     embedding=OllamaEmbeddings(),
+#     collection=MONGODB_COLLECTION,
+#     index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
+# ) 
 # Querying data
 vector_search = MongoDBAtlasVectorSearch.from_connection_string(
     MONGODB_ATLAS_CLUSTER_URI,
@@ -54,7 +54,8 @@ print('Simple Similarity Search')
 query = "What are we engaged in ?"
 results = vector_search.similarity_search(query)
 
-print(results[0].page_content)
+#print(results[0].page_content)
+print(results)
 
 #Similarity Search with score
 print('Similarity Search with score')
