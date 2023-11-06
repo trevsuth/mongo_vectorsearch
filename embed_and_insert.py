@@ -20,7 +20,7 @@ client = MongoClient(MONGODB_ATLAS_CLUSTER_URI)
 
 DB_NAME = "langchain_db"
 COLLECTION_NAME = "test"
-ATLAS_VECTOR_SEARCH_INDEX_NAME = "gettysburg"
+ATLAS_VECTOR_SEARCH_INDEX_NAME = "default"
 
 MONGODB_COLLECTION = client[DB_NAME][COLLECTION_NAME]
 
@@ -29,15 +29,33 @@ loader = TextLoader('./gettysburg.txt')
 data = loader.load()
 
 # Split text
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=50, chunk_overlap=10)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=50, 
+                                               chunk_overlap=10
+                                              )
 docs = text_splitter.split_documents(data)
 
 # insert the documents in MongoDB Atlas with their embedding
+# len llama2 = 4095
+# len orca-mini = 3199 
 vector_search = MongoDBAtlasVectorSearch.from_documents(
     documents=docs,
-    embedding=OllamaEmbeddings(),
+    embedding=OllamaEmbeddings(model='orca-mini'),
     collection=MONGODB_COLLECTION,
     index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
 )
 
-MONGODB_COLLECTION.create_index([('embeddings')])
+#String for creating mongo index
+"""
+{
+  "mappings": {
+    "dynamic": true,
+    "fields": {
+      "embedding": {
+        "dimensions": 1536,
+        "similarity": "cosine",
+        "type": "knnVector"
+      }
+    }
+  }
+}
+"""
