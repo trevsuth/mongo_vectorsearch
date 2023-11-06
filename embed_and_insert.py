@@ -43,7 +43,7 @@ print(docs[0])
 """
 vector_search = MongoDBAtlasVectorSearch.from_documents(
     documents=docs,
-    embedding=OllamaEmbeddings(model='orca-mini'),
+    embedding=OllamaEmbeddings(model='llama2'),
     collection=MONGODB_COLLECTION,
     index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
 )
