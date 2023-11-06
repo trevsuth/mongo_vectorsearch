@@ -34,9 +34,13 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=50,
                                               )
 docs = text_splitter.split_documents(data)
 
+print(len(docs))
+print(docs[0])
+
 # insert the documents in MongoDB Atlas with their embedding
 # len llama2 = 4095
 # len orca-mini = 3199 
+"""
 vector_search = MongoDBAtlasVectorSearch.from_documents(
     documents=docs,
     embedding=OllamaEmbeddings(model='orca-mini'),
@@ -45,6 +49,8 @@ vector_search = MongoDBAtlasVectorSearch.from_documents(
 )
 
 #String for creating mongo index
+"""
+
 """
 {
   "mappings": {
